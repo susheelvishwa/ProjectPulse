@@ -1,21 +1,19 @@
-import { useDrag } from "react-dnd";
 import { Box } from "@chakra-ui/react";
+import { useDrag } from "react-dnd";
 
-const ItemType = "BLOCK";
-
-const Block = ({ id, content, laneId }) => {
+const Block = ({ content, id }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemType,
-    item: { id, content, laneId },
+    type: "BLOCK",
+    item: { id },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: !!monitor.isDragging(),
     }),
   }));
 
   return (
     <Box
       ref={drag}
-      bg="blue.500"
+      bg={isDragging ? "blue.300" : "blue.500"}
       color="white"
       p={4}
       mb={4}
@@ -23,6 +21,7 @@ const Block = ({ id, content, laneId }) => {
       boxShadow="md"
       textAlign="center"
       opacity={isDragging ? 0.5 : 1}
+      cursor="move"
     >
       {content}
     </Box>

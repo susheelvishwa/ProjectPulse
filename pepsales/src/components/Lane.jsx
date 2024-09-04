@@ -1,22 +1,22 @@
-import { useDrop } from "react-dnd";
 import { Box, Heading } from "@chakra-ui/react";
 import Block from "./Block";
+import { useDrop } from "react-dnd";
 
-const ItemType = "BLOCK";
-
-const Lane = ({ id, title, blocks, onDrop }) => {
+const Lane = ({ title, blocks, onDrop }) => {
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: ItemType,
-    drop: (item) => onDrop(item, id),
+    accept: "BLOCK",
+    drop: (item) => {
+      onDrop(item.id);
+    },
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      isOver: !!monitor.isOver(),
     }),
   }));
 
   return (
     <Box
       ref={drop}
-      bg={isOver ? "green.100" : "gray.100"}
+      bg={isOver ? "gray.200" : "gray.100"}
       p={4}
       borderRadius="md"
       boxShadow="md"
@@ -25,12 +25,7 @@ const Lane = ({ id, title, blocks, onDrop }) => {
         {title}
       </Heading>
       {blocks.map((block) => (
-        <Block
-          key={block.id}
-          id={block.id}
-          content={block.content}
-          laneId={id}
-        />
+        <Block key={block.id} id={block.id} content={block.content} />
       ))}
     </Box>
   );
